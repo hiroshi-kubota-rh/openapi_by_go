@@ -1,7 +1,9 @@
-# intern_pj
-RestAPIの思想に則って作成した，バックエンドAPIになります．
+# 概要
+This is a repository to study OpenAPI.
+OpenAPIの勉強のため作成したレポジトリです．
 
-M1マック環境の人はそのまま動くはず，M1mac以外の人は，docker-compose.ymlのmysqlのplatform部分の記載(5行目)を削除して実行してください．
+M1マック環境の人はそのまま動くはずです．  
+M1mac以外の人は，docker-compose.ymlのmysqlのplatform部分の記載(5行目)を削除して実行してください．
 
 ## 実行方法
 1. レポジトリのrootでdocker compose up --build する
