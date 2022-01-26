@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  description:
+    "This is a sample server for InternPJ of reazon.  You can find out more
+    about Swagger at [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/)."
+  version: 1.0.0
+  title: Swagger Newview Test
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8080/
+tags:
+  - name: test
+    description: Endpoint for healthchecks
+  - name: accounts
+    description: Everything about Accounts
+    externalDocs:
+      description: Find out more
+      url: http://example.com
+paths:
+  /test:
+    head:
+      tags:
+        - test
+      summary: Endpoint for test
+      description: ""
+      operationId: test
+      responses:
+        "200":
+          description: OK 
+    get:
+      tags:
+        - test
+      summary: Endpoint for test
+      description: ""
+      operationId: getTest
+      responses:
+        "200":
+          description: OK 
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK 2021/1/3
+  /accounts:
+    post:
+      tags:
+        - accounts
+      summary: Creating an account
+      description: ""
+      operationId: addAcount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: john
+                  description: The username of the account
+                password:
+                  type: string
+                  example: P@ssw0rd
+                  description: Password of user
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: "object"
+                properties:
+                  username: 
+                    type: "string"
+                    example: "jonh"
+                    description: The username of the account
+                  create_at:
+                    type: "string"
+                    example: "2022-01-05T14:48:17+09:00"
+                    description: The time when the account was created

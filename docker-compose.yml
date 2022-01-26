@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    command: "mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --default-time-zone='+9:00'"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: newview
+      MYSQL_USER: newview
+      MYSQL_PASSWORD: newview
+    volumes:
+      - "./.data/mysql:/var/lib/mysql"
+      - "./db:/docker-entrypoint-initdb.d"
+    restart: on-failure
+    
+  app:
+    build:
+      context: ./dockers/app
+      dockerfile: Dockerfile
+      target: test
+    working_dir: "/work/newview-backend-go"
+    volumes:
+      - "./src:/work/newview-backend-go"
+      - "./.data/go-pkg:/go/pkg/mod/cache"
+    ports:
+      - "8080:8080"
+    env_file:
+      - docker-compose.env
+    depends_on:
+      - mysql
+    command: "air"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: on-failure
+  
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./api_base.yml:/data/api_base.yml
+    environment:
+      SWAGGER_JSON: /data/api_base.yml
