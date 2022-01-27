@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"newview-backend-go/app/handler/impressionTags"
 	"newview-backend-go/app/handler/test"
 
 	"newview-backend-go/app/app"
@@ -27,6 +28,8 @@ func NewRouter(app *app.App) http.Handler {
 	r.Mount("/test", test.NewRouter())
 
 	r.Mount("/accounts", accounts.NewRouter(app))
+
+	r.Mount("/impression_tags", impressionTags.NewRouter(app))
 	return r
 }
 

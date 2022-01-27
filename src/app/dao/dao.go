@@ -10,6 +10,8 @@ type (
 	// DAO interface
 	Dao interface {
 		Account() repository.Account
+
+		ImpressionTag() repository.ImpressionTag
 	}
 
 	// Implementation for DAO
@@ -30,4 +32,8 @@ func New(config DBConfig) (Dao, error) {
 
 func (d *dao) Account() repository.Account {
 	return NewAccount(d.db)
+}
+
+func (d *dao) ImpressionTag() repository.ImpressionTag {
+	return NewImpressionTag(d.db)
 }

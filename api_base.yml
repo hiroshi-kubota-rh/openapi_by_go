@@ -15,11 +15,37 @@ servers:
 tags:
   - name: test
     description: Endpoint for healthchecks
-  - name: accounts
-    description: Everything about Accounts
+  - name: users
+    description: Everything about user accounts
     externalDocs:
       description: Find out more
-      url: http://example.com
+      url: https://versetyles.atlassian.net/wiki/spaces/DEVINTERN/pages/2445475841/DB
+  - name: impression_tags
+    description: Everything about Impresson tags
+    externalDocs:
+      description: Find out more
+      url: https://versetyles.atlassian.net/wiki/spaces/DEVINTERN/pages/2445475841/DB
+  - name: personal_tags
+    description: Everything about Personal tags
+    externalDocs:
+      description: Find out more
+      url: https://versetyles.atlassian.net/wiki/spaces/DEVINTERN/pages/2445475841/DB
+  - name: reviews
+    description: Everything about Reviews
+    externalDocs:
+      description: Find out more
+      url: https://versetyles.atlassian.net/wiki/spaces/DEVINTERN/pages/2445475841/DB
+  - name: user_items
+    description: Everything about User items
+    externalDocs:
+      description: Find out more
+      url: https://versetyles.atlassian.net/wiki/spaces/DEVINTERN/pages/2445475841/DB
+  - name: user_personal_tags
+    description: Everything about User personal tags
+    externalDocs:
+      description: Find out more
+      url: https://versetyles.atlassian.net/wiki/spaces/DEVINTERN/pages/2445475841/DB
+
 paths:
   /test:
     head:
@@ -48,7 +74,7 @@ paths:
   /accounts:
     post:
       tags:
-        - accounts
+        - users
       summary: Creating an account
       description: ""
       operationId: addAcount
@@ -83,3 +109,360 @@ paths:
                     type: "string"
                     example: "2022-01-05T14:48:17+09:00"
                     description: The time when the account was created
+
+  /impression_tags:
+    get:
+      tags:
+        - impression_tags
+      summary: Get impression tags as a list
+      description: ""
+      operationId: getImpressonTags
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/impression_tags"
+    post:
+      security:
+      - Auth: []
+      tags:
+        - impression_tags
+      summary: Posting a new impression_tags
+      description: ""
+      operationId: addImpressionTag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                impressionTag:
+                  type: string
+                  example: "美味しい"
+                  description: The text of the impression_tags
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/impression_tags"
+  /impression_tags/{id}:
+    get:
+      tags:
+        - impression_tags
+      summary: Get one impression tag
+      description: ""
+      operationId: getImpressonTag
+      parameters:
+        - name: id
+          in: path
+          description: ID of impression tag to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/impression_tags"
+    delete:
+      security:
+      - Auth: []
+      tags:
+        - impression_tags
+      summary: Deleting a impression_tag
+      description: ""
+      operationId: deleteImpressionTag
+      parameters:
+        - name: id
+          in: path
+          description: ID of impression_tag to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /personal_tags:
+    get:
+      tags:
+        - personal_tags
+      summary: Get personal tags as a list
+      description: ""
+      operationId: getPersonalTags
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/personal_tags"
+                
+    post:
+      security:
+      - Auth: []
+      tags:
+        - personal_tags
+      summary: Posting a new personal_tags
+      description: ""
+      operationId: addPersonalTag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                impressionTag:
+                  type: string
+                  example: "辛いの苦手"
+                  description: The text of the personal_tags
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/personal_tags"
+  /personal_tags/{id}:
+    get:
+      tags:
+        - personal_tags
+      summary: Get one personal tag
+      description: ""
+      operationId: getPersonalTag
+      parameters:
+        - name: id
+          in: path
+          description: ID of personal tag to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/personal_tags"
+    delete:
+      security:
+      - Auth: []
+      tags:
+        - personal_tags
+      summary: Deleting a personal_tag
+      description: ""
+      operationId: deletePersonalTag
+      parameters:
+        - name: id
+          in: path
+          description: ID of personal_tag to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  
+  /reviews:
+    get:
+      tags:
+        - reviews
+      summary: Get reviews as a list
+      description: ""
+      operationId: findReviews
+      parameters:
+        - &a1
+          name: max_id
+          in: query
+          description: Get a list of followings with ID less than this value
+          required: false
+          schema:
+            type: integer
+        - &a2
+          name: since_id
+          in: query
+          description: Get a list of followings with ID greater than this value
+          required: false
+          schema:
+            type: integer
+        - &a3
+          name: limit
+          in: query
+          description: Maximum number of followings to get (Default 40, Max 80)
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/reviews"
+    post:
+      tags:
+        - reviews
+      summary: Creat new review
+      description: ""
+      operationId: createReview
+      parameters:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_item_id:
+                  type: uint64
+                  example: 2
+                  description: ID of user_item
+                impression_tag_id:
+                  type: uint64
+                  example: 4
+                  description: ID of impression_tag
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reviews"
+    delete: 
+      tags:
+        - reviews
+      summary: Creat new review
+      description: ""
+      operationId: deleteReview
+      parameters:
+        - name: id
+          in: path
+          description: ID of review
+          equired: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: "object"
+                
+
+components:
+  securitySchemes:
+    Auth:
+      type: apiKey
+      name: Authentication
+      in: header
+  schemas:
+    impression_tags:
+      type: "object"
+      properties:
+        id: 
+          type: "uint64"
+          example: 1
+          description: The id of the impression tag
+        name:
+          type: "string"
+          example: "美味しい"
+          description: The name of the impression tag
+        create_at:
+          type: "string"
+          example: "2022-01-05T14:48:17+09:00"
+          description: The time when the account was created
+    personal_tags:
+      type: "object"
+      properties:
+        id: 
+          type: "uint64"
+          example: 1
+          description: The id of the personal tag
+        name:
+          type: "string"
+          example: "辛いの苦手"
+          description: The name of the personal tag
+        create_at:
+          type: "string"
+          example: "2022-01-05T14:48:17+09:00"
+          description: The time when the account was created
+    reviews:
+      type: "object"
+      properties:
+        id:
+          type: "uint64"
+          example: 1
+          description: The id of the review
+        user_item:
+          $ref: "#/components/schemas/user_items"
+        impression_tags:
+          $ref: "#/components/schemas/impression_tags"
+        create_at:
+          type: "string"
+          example: "2022-01-05T14:48:17+09:00"
+          description: The time when the account was created
+    users:
+      type: "object"
+      properties:
+        id: 
+          type: "uint64"
+          exmaple: 5
+          description: The id of the user
+        name:
+          type: "string"
+          example: "john"
+          description: The name of the user
+        create_at:
+          type: "string"
+          example: "2022-01-05T14:48:17+09:00"
+          description: The time when the account was created
+    user_items:
+      type: "object"
+      properties:
+        id:
+          type: "uint64"
+          example: 1
+          description: The id of the user_item
+        user_personal_tag:
+          $ref: "#/components/schemas/personal_tags"
+        item_id:
+          type: "uint64"
+          example: 1
+          description: The id of the user_item
+    user_personal_tags:
+      type: "object"
+      properties:
+        id:
+          type: "uint64"
+          example: 3
+          description: The id of the user_personal_tag
+        user:
+          $ref: "#/components/schemas/users"
+        personal_tag:
+          $ref: "#/components/schemas/personal_tags"
+
+        
+
+        
