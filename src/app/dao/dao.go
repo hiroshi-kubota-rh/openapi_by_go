@@ -9,7 +9,7 @@ import (
 type (
 	// DAO interface
 	Dao interface {
-		Account() repository.Account
+		Admin() repository.Admin
 
 		ImpressionTag() repository.ImpressionTag
 	}
@@ -30,8 +30,8 @@ func New(config DBConfig) (Dao, error) {
 	return &dao{db: db}, nil
 }
 
-func (d *dao) Account() repository.Account {
-	return NewAccount(d.db)
+func (d *dao) Admin() repository.Admin {
+	return NewAdmin(d.db)
 }
 
 func (d *dao) ImpressionTag() repository.ImpressionTag {
