@@ -34,7 +34,7 @@ func (r *impressionTag) CreatNewImpressionTag(ctx context.Context, impressionTag
 	return result, nil
 }
 
-//FindById : idからユーザーを取得
+//FindById : idからimpressionを取得
 func (r *impressionTag) FindById(ctx context.Context, id uint64) (*object.ImpressionTag, error) {
 	entity := new(object.ImpressionTag)
 	err := r.db.QueryRowxContext(ctx, "select * from impression_tags where id = ?", id).StructScan(entity)
@@ -43,6 +43,16 @@ func (r *impressionTag) FindById(ctx context.Context, id uint64) (*object.Impres
 			return nil, nil
 		}
 		return nil, fmt.Errorf("%w", err)
+	}
+	return entity, nil
+}
+
+func (r *impressionTag) DeleteById(ctx context.Context, id uint64) (*object.ImpressionTag, error) {
+	entity := new(object.ImpressionTag)
+	//deleteの命令はexec関数を用いるのが良いのでは？
+	err := r.db.QueryRowContext(ctx, "delete from impression_tags where id = ?", id)
+	if err != nil {
+		return nil, fmt.Errorf("%v", err)
 	}
 	return entity, nil
 }

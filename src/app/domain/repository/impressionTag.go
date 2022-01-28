@@ -8,9 +8,12 @@ import (
 )
 
 type ImpressionTag interface {
-	// Creat new user accpunt.
+	// Creat new user impression tag.
 	CreatNewImpressionTag(ctx context.Context, account *object.ImpressionTag) (sql.Result, error)
 
-	// Fetch account which has spwcified id
+	// Fetch impression tag which has spwcified id
 	FindById(ctx context.Context, id uint64) (*object.ImpressionTag, error)
+
+	// Delete impression tag whick has spwcified id
+	DeleteById(ctx context.Context, id uint64) (*object.ImpressionTag, error)
 }
