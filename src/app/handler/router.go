@@ -8,8 +8,6 @@ import (
 
 	"newview-backend-go/app/app"
 
-	"newview-backend-go/app/handler/accounts"
-
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
@@ -26,8 +24,6 @@ func NewRouter(app *app.App) http.Handler {
 	r.Use(newCORS().Handler)
 
 	r.Mount("/test", test.NewRouter())
-
-	r.Mount("/accounts", accounts.NewRouter(app))
 
 	r.Mount("/impression_tags", impressionTags.NewRouter(app))
 	return r
